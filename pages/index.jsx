@@ -15,7 +15,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <bre className={styles.textGrad}> Let'sMeet! </bre>{" "}
+          Welcome to <bre className={styles.textGrad}> {"Let'sMeet!"} </bre>{" "}
         </h1>
         <p className={styles.description}>
           Get started by creating and account
