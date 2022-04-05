@@ -11,18 +11,33 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import HeadLogo from "../HeadLogo";
 import Styles from "../../styles/Home.module.css";
-
-
+import { useAuth } from "../../context/AuthContext";
+import { useRouter } from "next/router";
 const theme = createTheme();
 
-export default function SignUp() {
-  const handleSubmit = (event) => {
+export default function SignIn() {
+  const { user, login } = useAuth();
+  console.log(user);
+  const router = useRouter();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const passData = {
       email: data.get("email"),
       password: data.get("password"),
-    });
+    };
+    console.log(passData);
+
+    const userReg = await login(passData.email, passData.password)
+      .then((res) => {
+        console.log(res);
+        router.push("/home");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    console.log(userReg);
   };
 
   return (
