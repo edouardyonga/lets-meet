@@ -13,13 +13,15 @@ import HeadLogo from "../HeadLogo";
 import Styles from "../../styles/Home.module.css";
 import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/router";
+import { useSnackbar } from "notistack";
 
 const theme = createTheme();
 
 const SignUp = () => {
   const { user, signup } = useAuth();
   console.log(user);
-  const router = useRouter()
+  const router = useRouter();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,17 +30,29 @@ const SignUp = () => {
       email: data.get("email"),
       password: data.get("password"),
     };
-    console.log(passData);
 
-    const userReg = await signup(passData.email, passData.password)
-      .then((res) => {
-        console.log(res);
-        router.push('/home')
-      })
-      .catch((err) => {
-        console.error(err);
+    console.log(passData);
+    if (passData.password.length < 8) {
+      enqueueSnackbar("At least 8 characters for password!", {
+        variant: "error",
       });
-    console.log(userReg);
+      return;
+    } else {
+      const userReg = await signup(passData.email, passData.password)
+        .then((res) => {
+          console.log(res);
+          enqueueSnackbar("Successfull Registration!", {
+            variant: "success",
+          });
+          router.push("/home");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      console.log(userReg);
+
+      return;
+    }
   };
 
   return (
@@ -47,7 +61,6 @@ const SignUp = () => {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

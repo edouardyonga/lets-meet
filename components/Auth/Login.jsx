@@ -13,12 +13,15 @@ import HeadLogo from "../HeadLogo";
 import Styles from "../../styles/Home.module.css";
 import { useAuth } from "../../context/AuthContext";
 import { useRouter } from "next/router";
+import { useSnackbar } from "notistack";
+
 const theme = createTheme();
 
 export default function SignIn() {
   const { user, login } = useAuth();
   console.log(user);
   const router = useRouter();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -32,10 +35,19 @@ export default function SignIn() {
     const userReg = await login(passData.email, passData.password)
       .then((res) => {
         console.log(res);
+        enqueueSnackbar("Logged in successfully", {
+          variant: "success",
+        });
         router.push("/home");
       })
       .catch((err) => {
-        console.error(err);
+        if (err.code.includes("invalid") || err.code.includes("wrong")) {
+          enqueueSnackbar("Wrong Credentials!", {
+            variant: "error",
+          });
+        }
+
+        console.log(err);
       });
     console.log(userReg);
   };
@@ -46,7 +58,6 @@ export default function SignIn() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
