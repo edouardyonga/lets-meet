@@ -19,7 +19,7 @@ const home = () => {
 
   return (
     <div>
-      <h1>Meet's Home</h1>
+      <h1>{"Meet's Home"}e</h1>
       <button onClick={out}>Logout</button>
     </div>
   );
