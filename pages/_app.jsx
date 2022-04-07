@@ -8,9 +8,14 @@ import lightTheme from "../styles/theme/lightTheme";
 import "../styles/globals.css";
 import Slide from "@mui/material/Slide";
 // import Navbar from "../components/Navbar/Navbar";
+import { useRouter } from "next/router";
+import RouterGuard from "../components/RouterGuard";
+
 const clientSideEmotionCache = createEmotionCache();
+const publicRoutes = ["/", "auth/login", "auth/signup"];
 
 const MyApp = (props) => {
+  const router = useRouter();
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
     <AuthContextProvider>
@@ -25,8 +30,8 @@ const MyApp = (props) => {
           <ThemeProvider theme={lightTheme}>
             <CssBaseline />
             {/* <Navbar /> */}
-            <Component {...pageProps} />{" "}
-          </ThemeProvider>{" "}
+            <Component {...pageProps} />
+          </ThemeProvider>
         </CacheProvider>
       </SnackbarProvider>
     </AuthContextProvider>
