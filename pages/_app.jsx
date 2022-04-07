@@ -30,15 +30,7 @@ const MyApp = (props) => {
           <ThemeProvider theme={lightTheme}>
             <CssBaseline />
             {/* <Navbar /> */}
-            <h2>{router.pathname}</h2>
-
-            {publicRoutes.includes(router.pathname) ? (
-              <Component {...pageProps} />
-            ) : (
-              <RouterGuard>
-                <Component {...pageProps} />
-              </RouterGuard>
-            )}
+            <Component {...pageProps} />
           </ThemeProvider>
         </CacheProvider>
       </SnackbarProvider>

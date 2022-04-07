@@ -1,5 +1,6 @@
 import React from "react";
 import Logout from "../components/Auth/Logout";
+import {withProtected} from "../components/RouterGuard";
 const home = () => {
   return (
     <div>
@@ -9,4 +10,4 @@ const home = () => {
   );
 };
 
-export default home;
+export default withProtected(home);

@@ -1,22 +1,28 @@
 import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
-import { useEffect } from "react";
 
-const RouterGuard = ({ children }) => {
-  const router = useRouter();
-  const { user } = useAuth();
+export const withPublic  = (Component) => {
+  return function WithPublic(props) {
+    const auth = useAuth();
+    const router = useRouter();
 
-  useEffect(() => {
-    const check = () => {
-      if (!user) {
-        router.replace("/auth/login");
-        return <h1>Loading...</h1>;
-      }
-    };
-     check();
-  }, [router, user]);
+    if (auth.user) {
+      router.replace("/home");
+      return <h1>Loading...</h1>;
+    }
+    return <Component {...props} />;
+  };
+}
 
-  return <>{children}</>;
-};
+export const withProtected = (Component) => {
+  return function WithProtected(props) {
+    const auth = useAuth();
+    const router = useRouter();
 
-export default RouterGuard;
+    if (!auth.user) {
+      router.replace("/auth/login");
+      return <h1>Loading...</h1>;
+    }
+    return <Component {...props} />;
+  };
+}
